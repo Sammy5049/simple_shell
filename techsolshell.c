@@ -56,7 +56,7 @@ int main(void)
 	{
 		ourIsatty(); /* Print the shell prompt */
 		fflush(stdin); /* Flush the input stream */
-		getlineBuff = ourGetlineFunc(&str, &strLen, stdin); /* Get input from user */
+		getlineBuff = getline(&str, &strLen, stdin); /* Get input from user */
 		endOfFile(getlineBuff, str); /* Handle end of file condition */
 		argv = strTokFunc(str, " \n");/* Tokenize the input string into an array */
 
