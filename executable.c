@@ -1,166 +1,82 @@
 #include "techsol.h"
 
 /**
- * exeFunc - function to execute a command
- * @argv: argument array
+ * executn - cmd execution.
+ * @args: user arg array
+ * @argv: cmd arg array
+ * Author: TEchsol
+ * Return: stat of the cmd
  */
-void exeFunc(char **argv)
+
+int executn(char **args, char **argv)
 {
-	int condition;
-	pid_t childpid;
+	pid_t pid_tsol;
+	int stat;
 
-	if (!argv || !argv[0])
-		return;
-
-	/* Creates a child process using fork */
-	childpid = fork();
-	if (childpid == -1)
-		perror(getEnviron("_"));
-	if (childpid == 0)
+	pid_tsol = fork();
+	if (pid_tsol < 0)
 	{
-		/* Execute the child process command */
-		execve(argv[0], argv, environ);
 		perror(argv[0]);
-		exit(EXIT_FAILURE);
+		exit(-1);
 	}
-
-
-	/* Clean up allocated memory and wait for the child till process finish */
-	freeargv(argv);
-	wait(&condition);
-}
-
-/**
- * redistribution - function to reallocate memory
- * @prept: pointer before realloc
- * @sizeBefore: size of pointer before realloc
- * @sizeAfter: size of pointer after realloc
- * Return: reallocated pointer
- */
-void *redistribution(void *prept, size_t sizeBefore, size_t sizeAfter)
-{
-	size_t count;
-	char *before = NULL, *after = NULL;
-
-	if (!prept)
-		return (ourCalloc(sizeAfter, 1));
-
-	if (sizeAfter == sizeBefore)
-		return (prept);
-
-	if (sizeAfter == 0 && prept)
+	else if (pid_tsol == 0)
 	{
-		free(prept);
-		return (NULL);
-	}
-
-	after = ourCalloc(sizeAfter, 1);
-	before = prept;
-
-	if (!after)
-		return (NULL);
-	if (sizeAfter > sizeBefore)
-	{
-		for (count = 0; count < sizeBefore; count++)
-			after[count] = before[count];
-		free(prept);
-
-		for (count = sizeBefore; count < sizeAfter; count++)
-			after[count] = '\0';
-	}
-
-	if (sizeAfter < sizeBefore)
-	{
-		for (count = 0; count < sizeAfter; count++)
-			after[count] = before[count];
-		free(prept);
-	}
-	return (after);
-}
-
-/**
- * ourCalloc - function to allocate memory with malloc and initialize to 0
- * @eleNum: number of elements
- * @sz: size of each element
- * Return: pointer to allocated memory
- */
-void *ourCalloc(size_t eleNum, size_t sz)
-{
-	size_t count;
-	char *buffer = NULL;
-
-	if (eleNum == 0 || sz == 0)
-		return (NULL);
-	buffer = malloc(eleNum * sz);
-	if (buffer)
-	{
-		for (count = 0; count < (eleNum * sz); count++)
-			buffer[count] = 0;
-		return (buffer);
+		execve(args[0], args, environ);
+		perror(argv[0]);
+		exit(2);
 	}
 	else
-		return (NULL);
+	{
+		wait(&stat);
+		if (WIFEXITED(stat))
+			stat = WEXITSTATUS(stat);
+
+		errno = stat;
+
+		free(args); /*free malloc for strings*/
+	}
+
+	return (stat);
 }
 
-/**
- * freeargv - custom function to free an array of pointers
- * @argv: pointer array
- */
-void freeargv(char **argv)
-{
-	int count;
 
-	/* Free each element in the pointer array andthe array itself */
-	for (count = 0; argv[count]; count++)
-		free(argv[count]);
-	free(argv);
-}
 
 /**
- * strTokFunc - program to split strings and create an array of pointers
- * @string: string to split
- * @delimiter: separator for splitting
- * Return: pointer array
+ * executn_two - command two exec
+ * @args: args array
+ * @argv: cmd line array
+ * @cmpcommand: complete command
+ * Author: Techsol
+ * Return: status
  */
-char **strTokFunc(char *string, const char *delimiter)
+
+int executn_two(char **args, char **argv, char *cmpcommand)
 {
-	char **callArry = NULL;
-	int count = 0, count1 = 0;
-	char *callCpy = NULL, *strToken = NULL;
+	pid_t pid_tsol;
+	int stat;
 
-	/* Copy the input string to avoid changing the original */
-	callCpy = ourCalloc((stringLen(string) + 1), 1);
-	if (!callCpy)
+	pid_tsol = fork();
+	if (pid_tsol < 0)
 	{
-		perror(getEnviron("_"));
-		return (NULL);
+		perror(cmpcommand);
+		exit(-1);
 	}
-	while (string[count])
+	else if (pid_tsol == 0)
 	{
-		callCpy[count] = string[count];
-		count++;
+		execve(cmpcommand, args, environ);
+		perror(argv[0]);
+		exit(2);
 	}
-	callCpy[count] = '\0';
-
-	/* Initialize the pointer array and tokenize the string */
-	callArry = ourCalloc((sizeof(char *)), 1);
-	strToken = strtok(callCpy, delimiter);
-	callArry[0] = stringDup(strToken);
-
-	count = 1;
-	count1 = 2;
-
-	/* Tokenize the string again and reallocate memory for the array */
-	while (strToken)
+	else
 	{
-		strToken = strtok(NULL, delimiter);
-		callArry = redistribution(
-				callArry, (sizeof(char *) * (count1 - 1)), (sizeof(char *) * count1)
-				);
-		callArry[count] = stringDup(strToken);
-		count++;
-		count1++;
+		wait(&stat);
+		/*this Macro handles conversion of exit status */
+		if (WIFEXITED(stat))
+			stat = WEXITSTATUS(stat);
+		errno = stat;
+
+		free(cmpcommand);
+		free(args);
 	}
-	free(callCpy);
-	return (callArry);
+	return (stat);
 }
