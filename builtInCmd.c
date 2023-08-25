@@ -5,6 +5,7 @@
  * @args: strg to check
  * @codename: prg name for the comd
  * @buff: buffer to get space alloc
+ * description: TECHSOL
  * Return: Execute cmd.
  */
 
