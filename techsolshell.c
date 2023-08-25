@@ -77,11 +77,13 @@ void executeCommands(char **args, char **argv)
 
 			executn_two(args, argv, completeCMD);
 			free(buf);
+			free(completeCMD);
 		}
 		else
 		{
 			executn(args, argv);
 			free(buf);
+			free(completeCMD);
 	
 		}
 	}
