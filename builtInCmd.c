@@ -15,17 +15,17 @@ int builtHandler(char **args, char *codename, char *buff)
 
 	(void)codename;
 
-	if (strcmp(args[0], "exit") == 0)
+	if (strCmp(args[0], "exit") == 0)
 	{
 		free(args);
 		free(buff);
 		exit(errno);
 	}
-	else if (strcmp(args[0], "env") == 0)
+	else if (strCmp(args[0], "env") == 0)
 	{
 		while (environ[position] != NULL)
 		{
-			write(1, environ[position], strlen(environ[position]));
+			write(1, environ[position], strLen(environ[position]));
 			write(1, "\n", 1);
 
 			position++;
@@ -61,4 +61,48 @@ void handleComment(char *buff)
 
 		count++;
 	}
+}
+
+/**
+ * strLen - count chars and return numb
+ * @s: data from user input
+ * Return: The result
+ */
+int strLen(char *s)
+{
+ int count = 0, length = 0;
+
+ while (s[count++])
+ {
+  length++;
+ }
+
+ return (length);
+}
+
+
+
+
+/**
+ * strCmp - Compares two str
+ * @s1: first str thst s2 is compared with
+ * @s2: second str compared with s1
+ *
+ * Return: return the true is not same and false
+ */
+
+
+int strCmp(char *s1, char *s2)
+{
+	int count = 0;
+
+	while (s1[count] != '\0' && s2[count] != '\0')
+	{
+		if (s1[count] != s2[count])
+		{
+			return (s1[count] - s2[count]);
+		}
+		count++;
+	}
+	return (s1[count] - s2[count]);
 }

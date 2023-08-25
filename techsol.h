@@ -15,6 +15,12 @@ extern char **environ;
 
 
 /* Variable prototypes*/
+int strLen(char *s);
+int strCmp(char *s1, char *s2);
+int strnCmp(char *s1, char *s2, size_t n);
+char *strDup(char *string);
+char *strCpy(char *dest, char *src);
+char *strCat(char *dest, char *src);
 void executeCommands(char **args, char **argv);
 char *handleInput(int *counter);
 char **tokenizePathnames(char *pathnames);
