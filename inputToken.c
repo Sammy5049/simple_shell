@@ -29,6 +29,7 @@ char *pathName(void)
  * handleTok - funct to tok str and allocate mem
  * @str: str buf from input
  * Return: str double ptr
+ * Description: TECHSOL
  */
 
 char **handleTok(char *str)

@@ -14,7 +14,7 @@
 extern char **environ;
 
 
-/*Variable prototypes*/
+/* Variable prototypes*/
 void executeCommands(char **args, char **argv);
 char *handleInput(int *counter);
 char **tokenizePathnames(char *pathnames);
@@ -29,7 +29,7 @@ char **handleTok(char *str);
 
 
 
-/*functions to handle err*/
+/* functions to handle err*/
 void handleError(char *program, int counter, char *cmdcnt);
 void putstr(char *string);
 int _putchar(char c);

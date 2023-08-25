@@ -5,6 +5,7 @@
 /**
  * handleInput - func to get line from terminal input
  * @counter: line counter
+ * Description: TECHSOL
  * Return: the buffer
  *
  */
@@ -35,6 +36,7 @@ char *handleInput(int *counter)
  * executeCommands - fucnt to check command execution
  * @args: string input
  * @argv: array of arg ptr
+ * Description: TECHSOL
  */
 
 void executeCommands(char **args, char **argv)
@@ -89,6 +91,7 @@ void executeCommands(char **args, char **argv)
  * main - main shell entry point
  * @argc: cmd line counter
  * @argv: vect
+ * Description: TECHSOL
  * Return: the output err number
  *
  */

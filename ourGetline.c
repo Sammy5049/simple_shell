@@ -5,6 +5,7 @@
  * @strptr: pointer to buffer to store the read string
  * @number: pointer to size of the buffer
  * @termread: stream from stdio (terminal)
+ * Description:TECHSOL
  * Return: number of characters read
  */
 ssize_t ourGetlineFunc(char **strptr, size_t *number, FILE *termread)

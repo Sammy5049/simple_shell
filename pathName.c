@@ -4,6 +4,7 @@
 /**
  * tokenizePathnames - output pathname tokenized
  * @pathnames: all directory in path
+ * Description: TECHSOL
  * Return: tok pathname
  */
 
@@ -43,6 +44,7 @@ char **tokenizePathnames(char *pathnames)
  * fullPathname - output pathname if exit
  * @pathnames: all directory in path
  * @command: string of cmd
+ * Description: TECHSOL
  * Return: NULL or full_pathname in str
  */
 
