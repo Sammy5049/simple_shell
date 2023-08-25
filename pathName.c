@@ -1,6 +1,5 @@
 #include "techsol.h"
 
-
 /**
  * tokenizePathnames - output pathname tokenized
  * @pathnames: all directory in path
@@ -36,10 +35,6 @@ char **tokenizePathnames(char *pathnames)
 	return (tokPath);
 }
 
-
-
-
-
 /**
  * fullPathname - output pathname if exit
  * @pathnames: all directory in path
@@ -74,14 +69,16 @@ char *fullPathname(char *pathnames, char *command)
 		if (access(pathnameFull, X_OK) == 0)
 		{
 			free(tokPath);
+			free(pathnames);
 			return (pathnameFull);
 		}
+
 		free(pathnameFull);
-		pathnameFull = NULL;
 		position++;
 	}
 
 	free(tokPath);
+	free(pathnames);
 	return (NULL);
 }
 

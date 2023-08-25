@@ -17,7 +17,7 @@ char *handleInput(int *counter)
 	char *buf = NULL;
 
 	if (active == 1) /*prompt in inter-active mode*/
-		write(1, "$Techsol ", 9);
+		write(1, "$ ", 2);
 
 	number_rt = getline(&buf, &sz_of_buf, stdin);
 	if (number_rt == -1)
@@ -70,14 +70,20 @@ void executeCommands(char **args, char **argv)
 				commandct = (counter + '0');
 				handleError(argv[0], commandct, args[0]);
 				free(args);
+				free(buf);
 				errno = 127;
 				continue;
 			}
 
 			executn_two(args, argv, completeCMD);
+			free(buf);
 		}
 		else
+		{
 			executn(args, argv);
+			free(buf);
+	
+		}
 	}
 }
 
