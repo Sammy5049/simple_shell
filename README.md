@@ -79,3 +79,4 @@ Handle variables replacement
 Handle the $? variable
 Handle the $$ variable
 Loving doing hard it.......
+ALX is very good and we will cross this hard bridge> Trust me sir.
