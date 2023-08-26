@@ -78,3 +78,4 @@ Simple shell 1.0 +
 Handle variables replacement
 Handle the $? variable
 Handle the $$ variable
+Loving doing hard it.......
