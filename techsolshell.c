@@ -1,114 +1,70 @@
 #include "techsol.h"
 
-
-
 /**
- * handleInput - func to get line from terminal input
- * @counter: line counter
- * Description: TECHSOL
- * Return: the buffer
+ * main - main shell entry point
+ * @argc: cmd line counter
+ * @argv: vect
+ * Return: the output err number
  *
  */
-char *handleInput(int *counter)
+
+int main(int argc, char **argv)
 {
 	size_t sz_of_buf = 0;
 	ssize_t number_rt = 0;
 	int active = isatty(0);
-	char *buf = NULL;
+	char *buf = NULL, **args = NULL, commandct, *completeCMD = NULL;
+	int st_of_bltin = 0, counter = 0;
+	errno = 0;
 
-	if (active == 1) /*prompt in inter-active mode*/
-		write(1, "$ ", 2);
-
-	number_rt = getline(&buf, &sz_of_buf, stdin);
-	if (number_rt == -1)
-	{
-		free(buf);
-		exit(errno);
-	}
-
-	(*counter)++;
-	handleComment(buf);
-	return (buf);
-}
-
-
-/**
- * executeCommands - fucnt to check command execution
- * @args: string input
- * @argv: array of arg ptr
- * Description: TECHSOL
- */
-
-void executeCommands(char **args, char **argv)
-{
-	int counter = 0;
-	char *completeCMD = NULL;
-	char commandct;
-
+	(void)argc;
 	while (1)
 	{
-		char *buf = handleInput(&counter);
+		counter++;
+		if (active == 1) /*prompt in inter-active mode*/
+			write(1, "$ ", 2);
 
-		args = handleTok(buf);
+		number_rt = getline(&buf, &sz_of_buf, stdin);
+		if (number_rt == -1)
+		{
+			free(buf);
+			exit(errno);
+		}
+		handleComment(buf);
+		args = handleTok(buf); /*allocated args*/
 		if (args[0] == NULL)
 		{
 			free(args);
 			continue;
 		}
-
+		/* Access returns -1 if path not found*/
 		if (access(args[0], X_OK) == -1)
 		{
-			int st_of_bltin = builtHandler(args, argv[0], buf);
+			/* check if command is builtin or not*/
+			st_of_bltin = builtHandler(args, argv[0], buf);
 
 			if (st_of_bltin == 1)
 				continue;
 
+			/*give fullpath to it's own variable*/
 			completeCMD = fullPathname(pathName(), args[0]);
 
 			if (completeCMD == NULL)
 			{
-				commandct = (counter + '0');
+				commandct = (counter + '0'); /*Convert integer to character*/
 				handleError(argv[0], commandct, args[0]);
 				free(args);
-				free(buf);
-				errno = 127;
+				errno = 127; /*when not sys call, set errno to 127*/
 				continue;
 			}
-
+			/* called when concat full path is valid*/
 			executn_two(args, argv, completeCMD);
-			free(buf);
+			continue;
+			/*do not call next execution continue to top loop*/
 		}
-		else
-		{
-			executn(args, argv);
-			free(buf);
-	
-		}
+		/*check when pathname is entered the right way*/
+		executn(args, argv);
 	}
-}
-
-
-
-
-
-
-
-/**
- * main - main shell entry point
- * @argc: cmd line counter
- * @argv: vect
- * Description: TECHSOL
- * Return: the output err number
- *
- */
-int main(int argc, char **argv)
-{
-	errno = 0;
-
-	(void)argc;
-
-	executeCommands(NULL, argv);
 
 	return (errno);
 }
-
